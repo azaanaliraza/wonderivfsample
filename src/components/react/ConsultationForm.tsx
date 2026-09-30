@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { withBase } from '../../lib/base';
 
 type Status = 'idle' | 'sending' | 'error' | 'done';
 
@@ -118,7 +119,7 @@ export default function ConsultationForm({ subjects }: Props) {
         <input type="checkbox" name="consent" required />
         <span>
           I agree to be contacted by Wonder IVF about my enquiry. My information will be handled in
-          line with the <a href="/privacy-policy/">Privacy Policy</a>.
+          line with the <a href={withBase('/privacy-policy/')}>Privacy Policy</a>.
         </span>
       </label>
 

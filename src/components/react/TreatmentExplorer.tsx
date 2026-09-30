@@ -3,6 +3,7 @@ import { treatments } from '../../content/treatments';
 import { diagnostics } from '../../content/diagnostics';
 import { treatmentCategories } from '../../lib/site';
 import manifest from '../../generated/images.json';
+import { withBase } from '../../lib/base';
 
 type Item = {
   slug: string;
@@ -62,7 +63,7 @@ export default function TreatmentExplorer() {
           <a
             key={t.slug}
             className="explorer-card"
-            href={t.path}
+            href={withBase(t.path)}
             style={{ ['--d' as string]: `${Math.min(i, 8) * 45}ms` }}
           >
             <span className="explorer-media">
