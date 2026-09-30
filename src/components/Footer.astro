@@ -1,0 +1,93 @@
+---
+import { site, nav, footerLinks, locations } from '../lib/site';
+import Icon from './Icon.astro';
+
+const year = new Date().getFullYear();
+const group = (label: string) => nav.find((n) => n.label === label) as any;
+const treatments = group('Treatments')?.children?.slice(1) ?? [];
+const infertility = group('Infertility')?.children?.slice(1) ?? [];
+const diagnostics = group('Diagnostics')?.children?.slice(1) ?? [];
+---
+
+<footer class="footer noise">
+  <div class="organic-lines" aria-hidden="true"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a class="footer-logo" href="/" aria-label="Wonder IVF — home">
+          <img src="/brand/wonder-ivf-mumbai-india.png" alt="Wonder IVF logo" width="200" height="52" loading="lazy" />
+        </a>
+        <p style="max-width:34ch;">
+          Advanced fertility and IVF care built on experience, ethics and genuine human
+          connection — walking beside you at every step of the journey to parenthood.
+        </p>
+        <div class="socials" style="margin-top:1.4rem;">
+          {
+            site.socials.map((s) => (
+              <a href={s.href} aria-label={s.label} rel="noopener noreferrer" target="_blank">
+                <Icon name={s.label === 'Instagram' ? 'instagram' : s.label === 'Facebook' ? 'facebook' : 'linkedin'} />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Wonder IVF</h4>
+        <ul>
+          {footerLinks[0].links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Treatments</h4>
+        <ul>
+          {treatments.slice(0, 8).map((l: any) => <li><a href={l.href}>{l.label}</a></li>)}
+          <li><a href="/treatments/">View all treatments</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          {infertility.slice(0, 4).map((l: any) => <li><a href={l.href}>{l.label}</a></li>)}
+          {diagnostics.slice(0, 3).map((l: any) => <li><a href={l.href}>{l.label}</a></li>)}
+          <li><a href="/faqs/">FAQs</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Reach us</h4>
+        <ul>
+          <li>
+            <a class="footer-contact" href={`tel:${site.phoneHref}`}>{site.phone}</a>
+          </li>
+          <li>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </li>
+          {
+            locations.map((loc) => (
+              <li>
+                <p style="color:rgba(255,255,255,.55);font-size:.85rem;margin-top:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">
+                  {loc.short}
+                </p>
+                <p>{loc.address.join(', ')}</p>
+                <a href={`tel:${loc.phoneHref}`}>{loc.phone}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {year} {site.legalName}. All rights reserved.</p>
+      <div class="topbar-group">
+        <a href="/privacy-policy/">Privacy Policy</a>
+        <a href="/terms-conditions/">Terms &amp; Conditions</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
+    </div>
+  </div>
+</footer>

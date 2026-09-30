@@ -1,0 +1,57 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../lib/site';
+
+interface Props {
+  title?: string;
+  text?: string;
+  eyebrow?: string;
+}
+const {
+  title = 'Take the first step toward parenthood',
+  text = 'Every fertility journey is personal. Speak with our team, understand your options and move forward with clarity — at your pace, on your terms.',
+  eyebrow = 'Book a consultation',
+} = Astro.props;
+---
+
+<section class="section section-plum" style="overflow:hidden;">
+  <div class="organic-lines" aria-hidden="true" style="opacity:.35;"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="split split-wide" style="align-items:center;">
+      <div data-reveal>
+        <span class="eyebrow">{eyebrow}</span>
+        <h2 class="h2" style="margin-top:1rem;">{title}</h2>
+        <p class="lead" style="margin-top:1.1rem;max-width:52ch;">{text}</p>
+        <div class="btn-row" style="margin-top:2rem;">
+          <a class="btn btn-light btn-lg" href="/contact-us/">
+            Book a Consultation
+            <Icon name="arrow" class="arrow" />
+          </a>
+          <a class="btn btn-outline-light btn-lg" href={`tel:${site.phoneHref}`}>
+            <Icon name="phone" />
+            {site.phone}
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-2" style="gap:1rem;" data-reveal="right">
+        {
+          [
+            { icon: 'shield', title: 'Transparent costs', text: 'A clear breakdown for every plan, before you begin.' },
+            { icon: 'users', title: 'Experienced team', text: 'A team with more than 15 years in fertility and IVF care.' },
+            { icon: 'heart', title: 'Emotional support', text: 'Counselling and guidance at every stage of treatment.' },
+            { icon: 'lab', title: 'Modern embryology lab', text: 'Controlled environments and continuous laboratory surveillance.' },
+          ].map((f) => (
+            <div class="card card-glass">
+              <div class="tile-icon" style="background:rgba(255,255,255,.16);color:#fff;margin-bottom:.4rem;">
+                <Icon name={f.icon as any} />
+              </div>
+              <h3 class="h5">{f.title}</h3>
+              <p style="font-size:.9rem;">{f.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Boilerplate WordPress endpoints — not part of the site
+Disallow: /?page_id=
+Disallow: /category/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+
+Sitemap: https://wonderivf.com/sitemap-index.xml

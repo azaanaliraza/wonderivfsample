@@ -1,0 +1,100 @@
+---
+import { site, nav } from '../lib/site';
+import Icon from './Icon.astro';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+
+interface NavLink {
+  readonly label: string;
+  readonly href: string;
+}
+interface NavItem extends NavLink {
+  readonly children?: readonly NavLink[];
+}
+const hasChildren = (item: NavItem): item is NavItem & { readonly children: readonly NavLink[] } =>
+  Array.isArray(item.children) && item.children.length > 0;
+---
+
+<div class="topbar">
+  <div class="container topbar-inner">
+    <div class="topbar-group">
+      <a class="topbar-item" href={`tel:${site.phoneHref}`}>
+        <Icon name="phone" />
+        <span>{site.phone}</span>
+      </a>
+      <a class="topbar-item" href={`mailto:${site.email}`}>
+        <Icon name="mail" />
+        <span>{site.email}</span>
+      </a>
+    </div>
+    <div class="topbar-group">
+      <span class="topbar-item">
+        <Icon name="pin" />
+        <span>Andheri West, Mumbai &amp; Kolhapur</span>
+      </span>
+      <a class="topbar-item" href={`tel:${site.phoneHref}`}>
+        <Icon name="clock" />
+        <span>Speak to a fertility counsellor</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<header class="header" data-header>
+  <div class="container header-inner">
+    <a class="logo" href="/" aria-label="Wonder IVF — home">
+      <img src="/brand/wonder-ivf-mumbai-india.png" alt="Wonder IVF — advanced fertility and IVF care" width="180" height="46" />
+    </a>
+
+    <nav class="nav-desktop" aria-label="Main">
+      {
+        nav.map((item) =>
+          hasChildren(item) ? (
+            <div class="nav-item">
+              <a
+                class="nav-link"
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                aria-haspopup="true"
+              >
+                {item.label}
+                <svg class="nav-caret" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                  <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                </svg>
+              </a>
+              <div class:list={['dropdown', { wide: item.children.length > 8 }]}>
+                {item.label === 'About' && <div class="dropdown-label">Who we are</div>}
+                {item.label === 'Treatments' && <div class="dropdown-label">Assisted reproduction</div>}
+                {item.label === 'Infertility' && <div class="dropdown-label">Conditions we treat</div>}
+                {item.label === 'Diagnostics' && <div class="dropdown-label">Testing & evaluation</div>}
+                {item.children.map((c) => (
+                  <a href={c.href}>
+                    <span>{c.label}</span>
+                    <Icon name="arrow" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div class="nav-item">
+              <a class="nav-link" href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </div>
+          )
+        )
+      }
+    </nav>
+
+    <div class="header-actions">
+      <a class="btn btn-sm" href="/contact-us/">
+        Book Consultation
+        <Icon name="arrow" class="arrow" />
+      </a>
+      <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-burger>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>

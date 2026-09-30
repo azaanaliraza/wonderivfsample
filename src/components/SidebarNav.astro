@@ -1,0 +1,170 @@
+---
+import { site } from '../lib/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  items: { label: string; href: string }[];
+  current?: string;
+  ctaTitle?: string;
+}
+const {
+  title,
+  items,
+  current,
+  ctaTitle = 'Curious about your options? Let us talk.',
+} = Astro.props;
+---
+
+<aside class="sidebar">
+  <div class="sidebar-block">
+    <h2 class="sidebar-title">{title}</h2>
+    <nav aria-label={title}>
+      <ul class="sidebar-list">
+        {
+          items.map((i) => (
+            <li>
+              <a
+                href={i.href}
+                aria-current={i.href === current ? 'page' : undefined}
+                class:list={{ active: i.href === current }}
+              >
+                <span>{i.label}</span>
+                <Icon name="arrow" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="sidebar-cta">
+    <span class="num">Talk to us</span>
+    <h3>{ctaTitle}</h3>
+    <a class="sidebar-line" href={`tel:${site.phoneHref}`}>
+      <Icon name="phone" />
+      <span>
+        <small>Call us</small>
+        {site.phone}
+      </span>
+    </a>
+    <a class="sidebar-line" href={`mailto:${site.email}`}>
+      <Icon name="mail" />
+      <span>
+        <small>E-mail us</small>
+        {site.email}
+      </span>
+    </a>
+    <a class="btn" href="/contact-us/" style="width:100%;margin-top:.4rem;">
+      Book a Consultation <Icon name="arrow" class="arrow" />
+    </a>
+  </div>
+</aside>
+
+<style>
+  .sidebar {
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+    position: sticky;
+    top: 110px;
+  }
+  .sidebar-block {
+    background: var(--white);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-lg);
+    padding: clamp(1.2rem, 2vw, 1.6rem);
+  }
+  .sidebar-title {
+    font-family: var(--font-display);
+    font-size: 0.74rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rose-deep);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .sidebar-list {
+    display: grid;
+    gap: 0.15rem;
+    max-height: 52vh;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+  }
+  .sidebar-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--body);
+    transition:
+      background-color 0.3s var(--ease),
+      color 0.3s var(--ease),
+      padding-left 0.3s var(--ease);
+  }
+  .sidebar-list a svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+      opacity 0.35s var(--ease),
+      transform 0.35s var(--ease);
+    color: var(--plum);
+  }
+  .sidebar-list a:hover {
+    background: var(--blush);
+    color: var(--plum);
+    padding-left: 0.95rem;
+  }
+  .sidebar-list a:hover svg {
+    opacity: 1;
+    transform: none;
+  }
+  .sidebar-list a.active {
+    background: var(--plum);
+    color: #fff;
+    font-weight: 600;
+  }
+  .sidebar-list a.active svg {
+    opacity: 1;
+    transform: none;
+    color: #fff;
+  }
+
+  .sidebar-cta {
+    background: var(--grad-warm);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-lg);
+    padding: clamp(1.3rem, 2vw, 1.7rem);
+    display: grid;
+    gap: 0.75rem;
+  }
+  .sidebar-cta h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+  }
+  @media (max-width: 1024px) {
+    .sidebar {
+      position: static;
+    }
+    .sidebar-list {
+      max-height: none;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      display: grid;
+    }
+  }
+  @media (max-width: 560px) {
+    .sidebar-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

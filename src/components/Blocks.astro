@@ -1,0 +1,134 @@
+---
+import type { Block } from '../lib/content-types';
+import Img from './Img.astro';
+
+interface Props {
+  blocks: Block[];
+  cols?: boolean;
+}
+const { blocks, cols = false } = Astro.props;
+---
+
+<div class="content-blocks">
+  {
+    blocks.map((b) => {
+      if (b.type === 'prose')
+        return (
+          <section class="block prose">
+            {b.heading && <h2>{b.heading}</h2>}
+            {b.paragraphs.map((p) => (
+              <p set:html={p} />
+            ))}
+          </section>
+        );
+
+      if (b.type === 'list')
+        return (
+          <section class="block">
+            {b.heading && <h2 class="block-heading">{b.heading}</h2>}
+            {b.intro && <p class="prose">{b.intro}</p>}
+            <ul class:list={['check-list', { 'cols-2': cols }]}>
+              {b.items.map((i) => (
+                <li set:html={i} />
+              ))}
+            </ul>
+            {b.note && <p class="muted">{b.note}</p>}
+          </section>
+        );
+
+      if (b.type === 'steps')
+        return (
+          <section class="block">
+            <h2 class="block-heading">{b.heading}</h2>
+            {b.intro && <p class="prose">{b.intro}</p>}
+            <ol class="steps">
+              {b.steps.map((s, i) => (
+                <li class="step" data-reveal style={`--reveal-delay:${i * 60}ms`}>
+                  <span class="step-badge">{String(i + 1).padStart(2, '0')}</span>
+                  <div>
+                    <h3>{s.title}</h3>
+                    <p>{s.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        );
+
+      if (b.type === 'table')
+        return (
+          <section class="block">
+            <h2 class="block-heading">{b.heading}</h2>
+            {b.intro && <p class="prose">{b.intro}</p>}
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    {b.columns.map((c) => (
+                      <th scope="col">{c}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {b.rows.map((r) => (
+                    <tr>
+                      {r.map((cell, i) =>
+                        i === 0 ? (
+                          <th scope="row" style="background:transparent;text-transform:none;letter-spacing:0;font-size:.94rem;color:var(--ink);">
+                            {cell}
+                          </th>
+                        ) : (
+                          <td>{cell}</td>
+                        ),
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        );
+
+      if (b.type === 'cards')
+        return (
+          <section class="block">
+            <h2 class="block-heading">{b.heading}</h2>
+            {b.intro && <p class="prose">{b.intro}</p>}
+            <div class="grid grid-2" style="margin-top:.5rem;">
+              {b.cards.map((c, i) => (
+                <div class="card card-hover" data-reveal style={`--reveal-delay:${i * 50}ms`}>
+                  <h3 class="h5" style="margin-bottom:.4rem;">
+                    {c.title}
+                  </h3>
+                  {c.text && <p style="font-size:.95rem;">{c.text}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+
+      if (b.type === 'note')
+        return (
+          <section class="block">
+            <div class="note">
+              {b.heading && <h2>{b.heading}</h2>}
+              <p set:html={b.text} />
+            </div>
+          </section>
+        );
+
+      return (
+        <section class="block">
+          <figure class="media media-wide" data-reveal="clip">
+            <Img src={b.src} alt={b.alt} sizes="(max-width: 900px) 100vw, 70vw" />
+            {b.caption && (
+              <figcaption class="muted" style="font-size:.85rem;margin-top:.75rem;">
+                {b.caption}
+              </figcaption>
+            )}
+          </figure>
+        </section>
+      );
+    })
+  }
+</div>

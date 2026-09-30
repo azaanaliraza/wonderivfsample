@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceView from '../components/views/ServiceView.astro';
+import ConditionView from '../components/views/ConditionView.astro';
+import DoctorView from '../components/views/DoctorView.astro';
+import BlogPostView from '../components/views/BlogPostView.astro';
+
+import { treatments } from '../content/treatments';
+import { diagnostics } from '../content/diagnostics';
+import { conditions } from '../content/conditions';
+import { doctors } from '../content/doctors';
+import { posts } from '../content/blog';
+
+export async function getStaticPaths() {
+  const tSiblings = treatments.map((t) => ({ label: t.title, href: t.path }));
+  const dSiblings = diagnostics.map((d) => ({ label: d.title, href: d.path }));
+  const cSiblings = conditions.map((c) => ({ label: c.title, href: c.path }));
+
+  return [
+    ...treatments.map((t) => ({
+      params: { slug: t.slug },
+      props: {
+        kind: 'service',
+        page: t,
+        siblings: tSiblings,
+        sectionLabel: 'Treatments',
+        sectionHref: '/treatments/',
+        related: treatments.filter((r) => r.slug !== t.slug && r.category === t.category).slice(0, 3),
+        relatedFallback: treatments.filter((r) => r.slug !== t.slug).slice(0, 3),
+        meta: { title: t.metaTitle, description: t.metaDescription, image: t.image, imageAlt: t.imageAlt },
+      },
+    })),
+    ...diagnostics.map((d) => ({
+      params: { slug: d.slug },
+      props: {
+        kind: 'service',
+        page: d,
+        siblings: dSiblings,
+        sectionLabel: 'Diagnostics',
+        sectionHref: '/diagnosis/',
+        related: diagnostics.filter((r) => r.slug !== d.slug).slice(0, 3),
+        relatedFallback: [],
+        meta: { title: d.metaTitle, description: d.metaDescription, image: d.image, imageAlt: d.imageAlt },
+      },
+    })),
+    ...conditions.map((c) => ({
+      params: { slug: c.slug },
+      props: {
+        kind: 'condition',
+        page: c,
+        siblings: cSiblings,
+        related: conditions.filter((r) => r.slug !== c.slug && r.group === c.group).slice(0, 3),
+        relatedFallback: conditions.filter((r) => r.slug !== c.slug).slice(0, 3),
+        meta: { title: c.metaTitle, description: c.metaDescription, image: c.image, imageAlt: c.imageAlt },
+      },
+    })),
+    ...doctors.map((d) => ({
+      params: { slug: d.slug },
+      props: {
+        kind: 'doctor',
+        doctor: d,
+        meta: { title: d.metaTitle, description: d.metaDescription, image: d.image, imageAlt: d.imageAlt },
+      },
+    })),
+    ...posts.map((p) => ({
+      params: { slug: p.slug },
+      props: {
+        kind: 'post',
+        post: p,
+        meta: { title: p.metaTitle, description: p.metaDescription, image: p.image, imageAlt: p.imageAlt },
+      },
+    })),
+  ];
+}
+
+const { kind, page, doctor, post, siblings, sectionLabel, sectionHref, related, relatedFallback, meta } =
+  Astro.props as any;
+
+const jsonLd =
+  kind === 'post'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: post.title,
+        description: meta.description,
+        datePublished: post.dateISO,
+        image: `https://wonderivf.com${post.image}`,
+        author: { '@type': 'Organization', name: 'Wonder IVF' },
+        publisher: { '@type': 'MedicalClinic', name: 'Wonder IVF', url: 'https://wonderivf.com/' },
+        mainEntityOfPage: `https://wonderivf.com${post.path}`,
+      }
+    : kind === 'doctor'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Physician',
+        name: doctor.name,
+        jobTitle: doctor.title,
+        description: meta.description,
+        image: `https://wonderivf.com${doctor.image}`,
+        worksFor: { '@type': 'MedicalClinic', name: 'Wonder IVF', url: 'https://wonderivf.com/' },
+        medicalSpecialty: 'ReproductiveHealth',
+      }
+    : kind === 'service'
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'MedicalProcedure',
+          name: page.title,
+          description: meta.description,
+        }
+      : undefined;
+---
+
+<BaseLayout
+  title={meta.title}
+  description={meta.description}
+  canonical={kind === 'doctor' ? doctor.path : kind === 'post' ? post.path : page.path}
+  image={meta.image}
+  imageAlt={meta.imageAlt}
+  type={kind === 'doctor' ? 'profile' : kind === 'post' ? 'article' : 'article'}
+  jsonLd={jsonLd}
+>
+  {
+    kind === 'service' && (
+      <ServiceView
+        page={page}
+        siblings={siblings}
+        sectionLabel={sectionLabel}
+        sectionHref={sectionHref}
+        related={related?.length ? related : relatedFallback}
+      />
+    )
+  }
+  {
+    kind === 'condition' && (
+      <ConditionView page={page} siblings={siblings} related={related?.length ? related : relatedFallback} />
+    )
+  }
+  {kind === 'doctor' && <DoctorView doctor={doctor} others={doctors.filter((d) => d.slug !== doctor.slug)} />}
+  {
+    kind === 'post' && (
+      <BlogPostView post={post} related={posts.filter((p) => p.slug !== post.slug).slice(0, 3)} />
+    )
+  }
+</BaseLayout>

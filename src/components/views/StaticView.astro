@@ -1,0 +1,52 @@
+---
+import type { StaticPage } from '../../lib/content-types';
+import PageHero from '../PageHero.astro';
+import Blocks from '../Blocks.astro';
+import FAQSection from '../FAQSection.astro';
+import CTABand from '../CTABand.astro';
+import Icon from '../Icon.astro';
+import Img from '../Img.astro';
+
+interface Props {
+  page: StaticPage;
+  crumbs?: { label: string; href: string }[];
+  eyebrow?: string;
+  cta?: boolean;
+  children?: any;
+}
+const { page, crumbs, eyebrow, cta = true, children } = Astro.props;
+---
+
+<PageHero eyebrow={eyebrow} title={page.title} lede={page.lede} crumbs={crumbs}>
+  <div class="btn-row" style="margin-top:.75rem;">
+    <a class="btn" href="/contact-us/">Book a Consultation <Icon name="arrow" class="arrow" /></a>
+    <a class="btn btn-ghost" href="/faqs/">Read our FAQs</a>
+  </div>
+</PageHero>
+
+{
+  page.image && (
+    <section class="section-tight" style="padding-bottom:0;">
+      <div class="container">
+        <figure class="media media-wide" data-reveal="clip" style="box-shadow:var(--shadow-lg);">
+          <Img
+            src={page.image}
+            alt={page.imageAlt ?? ''}
+            sizes="(max-width: 900px) 100vw, 1200px"
+          />
+        </figure>
+      </div>
+    </section>
+  )
+}
+
+<section class="section-tight">
+  <div class="container-narrow">
+    <Blocks blocks={page.blocks} />
+    {children}
+  </div>
+</section>
+
+{page.faqs && page.faqs.length > 0 && <FAQSection items={page.faqs} schema={true} />}
+
+{cta && <CTABand />}

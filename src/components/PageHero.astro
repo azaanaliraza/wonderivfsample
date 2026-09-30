@@ -1,0 +1,30 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  crumbs?: { label: string; href: string }[];
+  children?: any;
+}
+const { eyebrow, title, lede, crumbs, children } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="blob blob-rose" style="width:420px;height:420px;top:-140px;right:-80px;"></div>
+  <div class="blob blob-lav" style="width:360px;height:360px;bottom:-160px;left:-100px;"></div>
+  <div class="container">
+    <div class="page-hero-inner">
+      {crumbs && <Breadcrumbs items={crumbs} />}
+      {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+      <h1 class="h1" data-reveal="in" set:html={title} />
+      {lede && (
+        <p class="lead" data-reveal="in" style="--reveal-delay:120ms">
+          {lede}
+        </p>
+      )}
+      {children}
+    </div>
+  </div>
+</section>

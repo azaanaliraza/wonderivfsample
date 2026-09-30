@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CTABand from '../components/CTABand.astro';
+import TreatmentExplorer from '../components/react/TreatmentExplorer';
+import Icon from '../components/Icon.astro';
+import { treatments } from '../content/treatments';
+import { conditions } from '../content/conditions';
+import { diagnostics } from '../content/diagnostics';
+---
+
+<BaseLayout
+  title="Fertility Treatments — IVF, IUI, ICSI & Fertility Preservation | Wonder IVF"
+  description="Explore Wonder IVF fertility treatments: IVF, ICSI, IUI, ovulation induction, frozen embryo transfer, PGT, TESA/TESE, laser assisted hatching, egg, sperm and embryo freezing, donor programs and genetic counselling."
+  canonical="/treatments/"
+  image="/images/treatments/comprehensive-fertility-services-mumbai.webp"
+  imageAlt="Comprehensive fertility treatments offered at Wonder IVF"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Wonder IVF fertility treatments',
+    itemListElement: treatments.map((t, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'MedicalProcedure',
+        name: t.title,
+        url: `https://wonderivf.com${t.path}`,
+      },
+    })),
+  }}
+>
+  <PageHero
+    eyebrow="Treatments"
+    title="Every path to parenthood, <em class='italic-accent'>clearly explained</em>"
+    lede="From first-line treatments like ovulation induction and IUI to advanced IVF, ICSI, genetic testing and fertility preservation — each option explained in plain language, with realistic expectations."
+    crumbs={[{ label: 'Treatments', href: '/treatments/' }]}
+  >
+    <div class="btn-row" style="margin-top:.75rem;">
+      <a class="btn" href="/contact-us/">Book a Consultation <Icon name="arrow" class="arrow" /></a>
+      <a class="btn btn-ghost" href="/diagnosis/">Start with a diagnosis</a>
+    </div>
+  </PageHero>
+
+  <section class="section-tight">
+    <div class="container">
+      <TreatmentExplorer client:visible />
+    </div>
+  </section>
+
+  <section class="section section-cream">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Where treatment begins</span>
+        <h2 class="h2">Understand first. <em class="italic-accent">Then decide.</em></h2>
+        <p class="lead">
+          Treatment only works when it is matched to a diagnosis. Our evaluation looks at both
+          partners before any pathway is recommended.
+        </p>
+      </div>
+      <div class="grid grid-3">
+        {
+          diagnostics.slice(0, 3).map((d, i) => (
+            <ServiceCard
+              href={d.path}
+              title={d.title}
+              text={d.lede}
+              image={d.image}
+              imageAlt={d.imageAlt}
+              index={i}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split-head">
+        <div class="section-head" style="margin-bottom:0;" data-reveal>
+          <span class="eyebrow">Conditions we treat</span>
+          <h2 class="h2">Care for the <em class="italic-accent">cause</em>, not just the symptom</h2>
+        </div>
+        <a class="btn btn-ghost" href="/infertility-problems/" data-reveal>
+          Understanding infertility <Icon name="arrow" class="arrow" />
+        </a>
+      </div>
+      <div class="grid grid-4">
+        {
+          conditions.slice(0, 8).map((c, i) => (
+            <ServiceCard
+              href={c.path}
+              title={c.title}
+              text={c.lede}
+              image={c.image}
+              imageAlt={c.imageAlt}
+              index={i}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    title="Not sure which treatment is right for you?"
+    text="That is exactly what a consultation is for. Your fertility specialist can advise which options may suit your individual circumstances after evaluation."
+  />
+</BaseLayout>

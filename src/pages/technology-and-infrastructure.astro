@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StaticView from '../components/views/StaticView.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CTABand from '../components/CTABand.astro';
+import Icon from '../components/Icon.astro';
+import { technologyPage } from '../content/technology';
+
+const capabilities = [
+  {
+    icon: 'lab',
+    t: 'Advanced IVF laboratory',
+    d: 'A purpose-built embryology environment supporting IVF, ICSI, cryopreservation and genetic procedures.',
+  },
+  {
+    icon: 'sparkle',
+    t: 'Precision embryology',
+    d: 'Micromanipulation, laser-assisted procedures and time-lapse style observation under controlled conditions.',
+  },
+  {
+    icon: 'flask',
+    t: 'Genetic testing support',
+    d: 'Preimplantation genetic testing and genetic counselling for families who need additional clarity.',
+  },
+  {
+    icon: 'scan',
+    t: 'Advanced imaging',
+    d: 'High-resolution transvaginal ultrasound, colour Doppler and sonosalpingography for accurate assessment.',
+  },
+  {
+    icon: 'shield',
+    t: 'Cryopreservation & banking',
+    d: 'Controlled freezing of eggs, sperm and embryos for fertility preservation and future use.',
+  },
+  {
+    icon: 'micro',
+    t: 'Microfluidic sperm processing',
+    d: 'Laboratory techniques designed to identify and prepare the healthiest available sperm for treatment.',
+  },
+];
+---
+
+<BaseLayout
+  title="Technology & Infrastructure — Advanced Fertility Lab | Wonder IVF"
+  description={technologyPage.metaDescription}
+  canonical={technologyPage.path}
+  image={technologyPage.image ?? '/images/facility/ivf-laboratory-mumbai.webp'}
+  imageAlt={technologyPage.imageAlt ?? 'Wonder IVF advanced fertility laboratory'}
+>
+  <StaticView page={technologyPage} eyebrow="Technology & infrastructure" />
+
+  <section class="section section-cream">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Capabilities</span>
+        <h2 class="h2">The science behind <em class="italic-accent">better outcomes</em></h2>
+        <p class="lead">
+          Every technology we invest in has one purpose: to give your specialist clearer
+          information and your embryos better conditions.
+        </p>
+      </div>
+      <div class="grid grid-3">
+        {
+          capabilities.map((c) => (
+            <div class="card card-hover tile">
+              <span class="tile-icon">
+                <Icon name={c.icon as any} />
+              </span>
+              <h3 class="h5">{c.t}</h3>
+              <p style="font-size:.92rem;">{c.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Facilities</span>
+        <h2 class="h2">See where your <em class="italic-accent">care happens</em></h2>
+      </div>
+      <div class="grid grid-2">
+        <ServiceCard
+          href="/ivf-centre-in-andheri/"
+          title="IVF Centre in Andheri, Mumbai"
+          text="A dedicated fertility centre in Andheri West offering consultation, diagnostics, treatment and day-care procedures under one roof."
+          image="/images/facility/wonder-ivf-mumbai.webp"
+          imageAlt="Wonder IVF fertility centre in Andheri West Mumbai"
+          index={0}
+        />
+        <ServiceCard
+          href="/ivf-centre-in-kolhapur/"
+          title="IVF Centre in Kolhapur"
+          text="Advanced fertility care closer to home, with standards aligned to leading IVF centres in India."
+          image="/images/facility/ivf-hospital-in-mumbai.webp"
+          imageAlt="Wonder IVF fertility centre in Kolhapur"
+          index={1}
+        />
+      </div>
+      <div class="btn-row" style="justify-content:center;margin-top:2.5rem;" data-reveal>
+        <a class="btn" href="/contact-us/">Book a facility visit <Icon name="arrow" class="arrow" /></a>
+        <a class="link-arrow" href="/our-doctors/">Meet our specialists <Icon name="arrow" class="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    title="Technology matters most in the hands that use it"
+    text="Our specialists will explain how the technology behind your treatment plan is used, and what it means for your individual case."
+  />
+</BaseLayout>

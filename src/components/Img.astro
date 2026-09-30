@@ -1,0 +1,48 @@
+---
+import manifest from '../generated/images.json';
+
+interface Props {
+  src: string;
+  alt: string;
+  sizes?: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  priority?: boolean;
+  position?: string;
+  width?: number;
+  height?: number;
+}
+
+const {
+  src,
+  alt,
+  sizes = '100vw',
+  class: className,
+  loading,
+  priority = false,
+  position = 'center',
+  width,
+  height,
+} = Astro.props;
+
+const entry = (manifest as Record<string, { w: number; h: number; srcset?: string }>)[src];
+const srcset = entry?.srcset;
+const w = width ?? entry?.w;
+const h = height ?? entry?.h;
+const load = loading ?? (priority ? 'eager' : 'lazy');
+const largest = srcset ? srcset.split(', ').pop()?.split(' ')[0] ?? src : src;
+---
+
+<img
+  src={largest}
+  srcset={srcset}
+  sizes={sizes}
+  alt={alt}
+  width={w}
+  height={h}
+  loading={load}
+  decoding={priority ? 'sync' : 'async'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  class={className}
+  style={`object-position:${position};`}
+/>

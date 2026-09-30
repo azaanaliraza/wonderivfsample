@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import CTABand from '../../components/CTABand.astro';
+import Icon from '../../components/Icon.astro';
+import { posts } from '../../content/blog';
+
+const metaDescription =
+  'Fertility education from Wonder IVF — plain-language guides on IVF, nutrition, embryo transfer and treatment decisions.';
+---
+
+<BaseLayout
+  title="Fertility Blog & Guides | Wonder IVF"
+  description={metaDescription}
+  canonical="/blog/"
+  image="/images/treatments/ivf-consultation-india.webp"
+  imageAlt="Fertility education articles from Wonder IVF"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: 'Wonder IVF Fertility Blog',
+    description: metaDescription,
+    blogPost: posts.map((p) => ({
+      '@type': 'BlogPosting',
+      headline: p.title,
+      datePublished: p.dateISO,
+      url: `https://wonderivf.com${p.path}`,
+      image: `https://wonderivf.com${p.image}`,
+      author: { '@type': 'Organization', name: 'Wonder IVF' },
+    })),
+  }}
+>
+  <PageHero
+    eyebrow="Blog"
+    title="Understanding your <em class='italic-accent'>fertility</em>, one clear article at a time"
+    lede="Plain-language guides written to help you ask better questions — no jargon, no scare tactics, and nothing we cannot stand behind."
+    crumbs={[{ label: 'Blog', href: '/blog/' }]}
+  >
+    <div class="btn-row" style="margin-top:.75rem;">
+      <a class="btn" href="/contact-us/">Book a Consultation <Icon name="arrow" class="arrow" /></a>
+      <a class="btn btn-ghost" href="/faqs/">Browse FAQs</a>
+    </div>
+  </PageHero>
+
+  <section class="section-tight">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Latest articles</span>
+        <h2 class="h2">Guides worth reading <em class="italic-accent">before</em> your next step</h2>
+      </div>
+      <div class="grid grid-3">
+        {
+          posts.map((p, i) => (
+            <ServiceCard
+              href={p.path}
+              title={p.title}
+              text={p.excerpt}
+              image={p.image}
+              imageAlt={p.imageAlt}
+              index={i}
+              eyebrow={`${p.category} · ${p.readingTime}`}
+            />
+          ))
+        }
+      </div>
+
+      <div class="btn-row" style="justify-content:center;margin-top:3rem;" data-reveal>
+        <a class="btn" href="/treatments/">Explore treatments <Icon name="arrow" class="arrow" /></a>
+        <a class="link-arrow" href="/our-doctors/">Meet our specialists <Icon name="arrow" class="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <CTABand />
+</BaseLayout>

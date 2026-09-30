@@ -1,0 +1,160 @@
+---
+import type { Doctor } from '../lib/content-types';
+import Img from './Img.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  doctor: Doctor;
+  featured?: boolean;
+}
+const { doctor, featured = false } = Astro.props;
+---
+
+<article class:list={['doctor-card', { featured }]} data-reveal>
+  <a class="doctor-media" href={doctor.path} tabindex="-1" aria-hidden="true">
+    <Img
+      src={doctor.image}
+      alt={doctor.imageAlt}
+      sizes={featured ? '(max-width: 900px) 100vw, 40vw' : '(max-width: 700px) 100vw, 30vw'}
+      class="doctor-img"
+      position="top center"
+    />
+    <span class="doctor-badge">{doctor.title}</span>
+  </a>
+  <div class="doctor-body">
+    <h3 class="h4">
+      <a href={doctor.path}>{doctor.name}</a>
+    </h3>
+    <p class="doctor-cred">{doctor.credentials}</p>
+    <ul class="doctor-stats">
+      {
+        doctor.stats.slice(0, 2).map((s) => (
+          <li>
+            <strong>
+              {s.prefix}
+              {s.value.toLocaleString('en-IN')}
+              {s.suffix}
+            </strong>
+            <span>{s.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <a class="link-arrow" href={doctor.path}>
+      View profile <Icon name="arrow" class="arrow" />
+    </a>
+  </div>
+</article>
+
+<style>
+  .doctor-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+    transition:
+      transform 0.6s var(--ease),
+      box-shadow 0.6s var(--ease),
+      border-color 0.4s var(--ease);
+  }
+  .doctor-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(209, 127, 156, 0.45);
+  }
+  .doctor-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--blush);
+  }
+  .doctor-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 1.1s var(--ease);
+  }
+  .doctor-card:hover .doctor-img {
+    transform: scale(1.06);
+  }
+  .doctor-badge {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    padding: 0.42rem 0.9rem;
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    font-family: var(--font-display);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--plum);
+    max-width: calc(100% - 2rem);
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.5s var(--ease),
+      transform 0.5s var(--ease);
+  }
+  .doctor-card:hover .doctor-badge,
+  .doctor-card:focus-within .doctor-badge {
+    opacity: 1;
+    transform: none;
+  }
+  .doctor-body {
+    padding: clamp(1.25rem, 2vw, 1.7rem);
+    display: grid;
+    gap: 0.55rem;
+    align-content: start;
+  }
+  .doctor-body h3 a {
+    transition: color 0.3s var(--ease);
+  }
+  .doctor-body h3 a:hover {
+    color: var(--plum-soft);
+  }
+  .doctor-cred {
+    font-size: 0.86rem;
+    color: var(--rose-deep);
+    font-weight: 600;
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+  .doctor-stats {
+    display: grid;
+    gap: 0.55rem;
+    padding: 0.9rem 0 0.35rem;
+    border-top: 1px solid var(--line-soft);
+    margin-top: 0.35rem;
+  }
+  .doctor-stats li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .doctor-stats strong {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    min-width: 4.6rem;
+  }
+  .doctor-stats span {
+    font-size: 0.8rem;
+    color: var(--body-soft);
+    line-height: 1.35;
+  }
+  .link-arrow {
+    margin-top: 0.6rem;
+    justify-self: start;
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+import type { ConditionPage } from '../../lib/content-types';
+import PageHero from '../PageHero.astro';
+import Blocks from '../Blocks.astro';
+import SidebarNav from '../SidebarNav.astro';
+import CTABand from '../CTABand.astro';
+import FAQSection from '../FAQSection.astro';
+import ServiceCard from '../ServiceCard.astro';
+import Icon from '../Icon.astro';
+import { nav } from '../../lib/site';
+
+interface Props {
+  page: ConditionPage;
+  siblings: { label: string; href: string }[];
+  related: ConditionPage[];
+}
+const { page, siblings, related } = Astro.props;
+const inf = nav.find((n) => n.label === 'Infertility') as any;
+const allConditions = inf?.children ?? [];
+---
+
+<PageHero
+  eyebrow="Understanding infertility"
+  title={page.title}
+  lede={page.lede}
+  crumbs={[
+    { label: 'Infertility', href: '/infertility-problems/' },
+    { label: page.title, href: page.path },
+  ]}
+>
+  <div class="btn-row" style="margin-top:.75rem;">
+    <a class="btn" href="/contact-us/">Speak to a specialist <Icon name="arrow" class="arrow" /></a>
+    <a class="btn btn-ghost" href="/infertility-problems/">Understanding infertility</a>
+  </div>
+</PageHero>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="service-layout">
+      <article class="service-content">
+        <div class="note" style="margin-bottom:2rem;">
+          <p>
+            This information is educational and does not replace professional medical advice.
+            Whether a condition affects your fertility — and which treatment may help — can only
+            be determined after evaluation by your fertility specialist.
+          </p>
+        </div>
+        <Blocks blocks={page.blocks} />
+      </article>
+      <SidebarNav
+        title="Infertility & conditions"
+        items={allConditions}
+        current={page.path}
+        ctaTitle="Questions about a condition? Ask us."
+      />
+    </div>
+  </div>
+</section>
+
+{
+  related.length > 0 && (
+    <section class="section section-cream">
+      <div class="container">
+        <div class="split-head">
+          <div class="section-head" style="margin-bottom:0;" data-reveal>
+            <span class="eyebrow">Related conditions</span>
+            <h2 class="h2">Explore further</h2>
+          </div>
+          <a class="btn btn-ghost" href="/infertility-problems/">
+            All conditions <Icon name="arrow" class="arrow" />
+          </a>
+        </div>
+        <div class="grid grid-3">
+          {related.map((r, i) => (
+            <ServiceCard
+              href={r.path}
+              title={r.title}
+              text={r.lede}
+              image={r.image}
+              imageAlt={r.imageAlt}
+              index={i}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+{page.faqs && page.faqs.length > 0 && <FAQSection items={page.faqs} schema={true} />}
+
+<CTABand
+  title="Clarity starts with the right evaluation"
+  text="If you have questions about a condition you have read about, a consultation can put things in perspective. Your specialist can advise on what applies to your individual circumstances."
+/>
+
+<style>
+  .service-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+  .service-content {
+    min-width: 0;
+  }
+  @media (max-width: 1024px) {
+    .service-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .service-layout > aside {
+      order: -1;
+    }
+  }
+</style>

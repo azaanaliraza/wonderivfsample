@@ -1,0 +1,75 @@
+---
+import Accordion from './react/Accordion';
+import type { Faq } from '../lib/content-types';
+
+interface Props {
+  items: Faq[];
+  title?: string;
+  lede?: string;
+  eyebrow?: string;
+  center?: boolean;
+  schema?: boolean;
+  id?: string;
+}
+const {
+  items,
+  title = 'Questions, answered honestly',
+  lede = 'Straight answers to the questions we hear most often. If yours is not here, our team is one call away.',
+  eyebrow = 'FAQs',
+  center = false,
+  schema = false,
+  id = 'faqs',
+} = Astro.props;
+
+const jsonLd = schema
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: items.map((i) => ({
+        '@type': 'Question',
+        name: i.q,
+        acceptedAnswer: { '@type': 'Answer', text: i.a },
+      })),
+    }
+  : undefined;
+---
+
+<section class="section" id={id}>
+  <div class="container">
+    <div class="faq-layout">
+      <div class="faq-intro" data-reveal>
+        <span class="eyebrow">{eyebrow}</span>
+        <h2 class="h2" style="margin-top:1rem;">{title}</h2>
+        <p class="lead" style="margin-top:1rem;">{lede}</p>
+        <a class="btn btn-ghost" href="/faqs/" style="margin-top:1.6rem;">
+          All FAQs <span class="arrow">→</span>
+        </a>
+      </div>
+      <div data-reveal="right">
+        <Accordion items={items} client:visible />
+      </div>
+    </div>
+  </div>
+  {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+</section>
+
+<style>
+  .faq-layout {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .faq-intro {
+    position: sticky;
+    top: 120px;
+  }
+  @media (max-width: 900px) {
+    .faq-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .faq-intro {
+      position: static;
+    }
+  }
+</style>

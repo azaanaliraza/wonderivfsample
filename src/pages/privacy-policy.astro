@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StaticView from '../components/views/StaticView.astro';
+import { privacyPage } from '../content/legal';
+
+const page = privacyPage;
+const crumbs = undefined;
+---
+
+<BaseLayout
+  title={page.metaTitle}
+  description={page.metaDescription}
+  canonical={page.path}
+  image={page.image ?? '/images/hero/best-ivf-centre-in-mumbai.webp'}
+  imageAlt={page.imageAlt ?? 'Wonder IVF fertility care'}
+>
+  <StaticView page={page} crumbs={crumbs} eyebrow="Legal" />
+</BaseLayout>

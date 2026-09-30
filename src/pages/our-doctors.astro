@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import DoctorCard from '../components/DoctorCard.astro';
+import CTABand from '../components/CTABand.astro';
+import AnimatedStats from '../components/react/AnimatedStats';
+import Icon from '../components/Icon.astro';
+import { doctors } from '../content/doctors';
+
+const stats = [
+  { value: 15, suffix: '+', label: 'Years of team experience in fertility and IVF care' },
+  { value: 3, label: 'Fertility specialists across reproductive medicine and endoscopy' },
+  { value: 2, label: 'Centres — Andheri West, Mumbai and Kolhapur' },
+];
+---
+
+<BaseLayout
+  title="Our Doctors — Fertility & IVF Specialists | Wonder IVF"
+  description="Meet the Wonder IVF fertility team — Dr. Kanika Kalyani, Dr. Rinoy Sreedharan and Dr. Shilpa S., specialists in reproductive medicine, gynaecological endoscopy and fertility care."
+  canonical="/our-doctors/"
+  image="/images/doctors/kanika-kalyan-ivf-specialist-mumbai.webp"
+  imageAlt="Fertility and IVF specialists at Wonder IVF"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Wonder IVF doctors',
+    itemListElement: doctors.map((d, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'Physician',
+        name: d.name,
+        jobTitle: d.title,
+        url: `https://wonderivf.com${d.path}`,
+        image: `https://wonderivf.com${d.image}`,
+        worksFor: { '@type': 'MedicalClinic', name: 'Wonder IVF' },
+      },
+    })),
+  }}
+>
+  <PageHero
+    eyebrow="Our doctors"
+    title="Specialists who treat the <em class='italic-accent'>person</em>, not just the report"
+    lede="Experienced fertility specialists in reproductive medicine, gynaecological endoscopy and reproductive ultrasound — with advanced training and a deeply personal approach to care."
+    crumbs={[{ label: 'Our Doctors', href: '/our-doctors/' }]}
+  >
+    <div class="btn-row" style="margin-top:.75rem;">
+      <a class="btn" href="/contact-us/">Book a Consultation <Icon name="arrow" class="arrow" /></a>
+      <a class="btn btn-ghost" href="/technology-and-infrastructure/">Our infrastructure</a>
+    </div>
+  </PageHero>
+
+  <section class="section-tight">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">The team</span>
+        <h2 class="h2">Meet your <em class="italic-accent">specialists</em></h2>
+      </div>
+      <div class="grid grid-3">
+        {doctors.map((d) => <DoctorCard doctor={d} featured />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight section-cream">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Experience you can feel</span>
+        <h2 class="h2">Care shaped by <em class="italic-accent">years</em> of practice</h2>
+      </div>
+      <div class="card" style="background:#fff;">
+        <AnimatedStats stats={stats} client:visible />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div data-reveal="left">
+          <span class="eyebrow">How we work</span>
+          <h2 class="h2" style="margin-top:1rem;">A consultation that <em class="italic-accent">listens first</em></h2>
+          <div class="prose" style="margin-top:1.3rem;">
+            <p>
+              Fertility treatment can bring questions, uncertainty and sometimes fear. Our
+              specialists take the time to listen, explain the diagnosis and treatment options
+              in simple language, and involve you in decisions about your care.
+            </p>
+            <p>
+              You will never be rushed through an appointment. Understanding your situation
+              comes before recommending anything — because a plan only works when it is built
+              around you.
+            </p>
+          </div>
+          <div class="btn-row" style="margin-top:2rem;">
+            <a class="btn" href="/contact-us/">Book a consultation <Icon name="arrow" class="arrow" /></a>
+            <a class="link-arrow" href="/faqs/">Read our FAQs <Icon name="arrow" class="arrow" /></a>
+          </div>
+        </div>
+        <div class="grid grid-2" style="gap:1rem;" data-reveal="right">
+          {
+            [
+              { icon: 'stethoscope', t: 'Evidence-based medicine', d: 'Recommendations grounded in your diagnosis, not in a fixed protocol.' },
+              { icon: 'chat', t: 'Plain-language explanations', d: 'Every option, timeline and cost explained clearly before you decide.' },
+              { icon: 'shield', t: 'Informed consent', d: 'Each stage proceeds only with your understanding and comfort.' },
+              { icon: 'heart', t: 'Emotional support', d: 'Counselling and a reachable team throughout your treatment.' },
+            ].map((f) => (
+              <div class="card card-hover tile">
+                <span class="tile-icon">
+                  <Icon name={f.icon as any} />
+                </span>
+                <h3 class="h5">{f.t}</h3>
+                <p style="font-size:.92rem;">{f.d}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    title="Meet the specialist who is right for you"
+    text="Tell us a little about your situation and we will guide you to the right starting point — no obligation, no assumptions."
+  />
+</BaseLayout>

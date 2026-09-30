@@ -1,0 +1,105 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;
+  imageAlt?: string;
+  type?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+const {
+  title,
+  description,
+  canonical,
+  image = '/images/hero/best-ivf-centre-in-mumbai.webp',
+  imageAlt = 'Wonder IVF fertility care',
+  type = 'website',
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+
+const siteUrl = 'https://wonderivf.com';
+const fullUrl = canonical ? new URL(canonical, siteUrl).href : Astro.url.href;
+const fullImage = new URL(image, siteUrl).href;
+const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+
+const cutAtWord = (value: string, max: number): string => {
+  if (value.length <= max) return value;
+  const cut = value.lastIndexOf(' ', max);
+  return (cut > 0 ? value.slice(0, cut) : value.slice(0, max)).trim();
+};
+
+/** Keep titles under ~65 characters, preferring to preserve the trailing brand segment. */
+const trimTitle = (value: string, max = 64): string => {
+  if (value.length <= max) return value;
+  for (const sep of [' | ', ' — ', ' – ', ' - ']) {
+    const at = value.lastIndexOf(sep);
+    if (at <= 0) continue;
+    const tail = value.slice(at);
+    const room = max - tail.length;
+    if (room >= 24) return `${cutAtWord(value.slice(0, at), room)}${tail}`;
+  }
+  return cutAtWord(value, max);
+};
+
+/** Keep descriptions under ~160 characters at a word boundary. */
+const trimDescription = (value: string, max = 158): string =>
+  value.length <= max ? value : `${cutAtWord(value, max - 1)}…`;
+
+const seoTitle = trimTitle(title);
+const seoDescription = trimDescription(description);
+
+// Every page falls back to a sitewide organisation graph when no page schema is supplied.
+const defaultSchemas: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Wonder IVF',
+    url: siteUrl,
+    description:
+      'Advanced fertility and IVF care in Mumbai and Kolhapur — IVF, IUI, ICSI, diagnostics and fertility preservation.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalClinic',
+    name: 'Wonder IVF',
+    url: siteUrl,
+    telephone: '+91-70734-31122',
+    email: 'info@wonderivf.com',
+    medicalSpecialty: 'ReproductiveHealth',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress:
+        'Unit 203-205, 2nd Floor, Lotus Link Square, DN Nagar Link Road, Andheri West',
+      addressLocality: 'Mumbai',
+      addressRegion: 'Maharashtra',
+      postalCode: '400053',
+      addressCountry: 'IN',
+    },
+    areaServed: 'Maharashtra, India',
+  },
+];
+const outputSchemas = schemas.length > 0 ? schemas : defaultSchemas;
+---
+
+<title>{seoTitle}</title>
+<meta name="description" content={seoDescription} />
+<link rel="canonical" href={fullUrl} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:site_name" content="Wonder IVF" />
+<meta property="og:type" content={type} />
+<meta property="og:title" content={seoTitle} />
+<meta property="og:description" content={seoDescription} />
+<meta property="og:url" content={fullUrl} />
+<meta property="og:image" content={fullImage} />
+<meta property="og:image:alt" content={imageAlt} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={seoTitle} />
+<meta name="twitter:description" content={seoDescription} />
+<meta name="twitter:image" content={fullImage} />
+
+{outputSchemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}

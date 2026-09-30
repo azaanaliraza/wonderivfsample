@@ -1,0 +1,972 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import Img from '../components/Img.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import DoctorCard from '../components/DoctorCard.astro';
+import FAQSection from '../components/FAQSection.astro';
+import CTABand from '../components/CTABand.astro';
+import AnimatedStats from '../components/react/AnimatedStats';
+import TreatmentExplorer from '../components/react/TreatmentExplorer';
+import JourneyTimeline from '../components/react/JourneyTimeline';
+
+import { doctors } from '../content/doctors';
+import { treatments } from '../content/treatments';
+import { posts } from '../content/blog';
+import { generalFaqs } from '../content/faqs';
+import { leaders } from '../content/leadership';
+import { locations } from '../lib/site';
+import { site } from '../lib/site';
+
+const heroStats = [
+  { value: 15, suffix: '+', label: 'Years of team experience in fertility and IVF care' },
+  { value: 3, label: 'Fertility specialists across reproductive medicine & endoscopy' },
+  { value: 2, label: 'Centres — Andheri West, Mumbai and Kolhapur' },
+  { value: 24, suffix: '/7', label: 'Support when you need guidance or a quick query' },
+];
+
+const why = [
+  {
+    icon: 'flask',
+    title: 'Advanced fertility treatments',
+    text: 'IVF, ICSI, IUI, PGT, fertility preservation and donor programs delivered from a modern embryology lab.',
+  },
+  {
+    icon: 'stethoscope',
+    title: 'Experienced fertility specialists',
+    text: 'A clinical team with more than 15 years of experience across reproductive medicine and gynaecological endoscopy.',
+  },
+  {
+    icon: 'users',
+    title: 'Personalised treatment plans',
+    text: 'Every pathway is built around your diagnosis, timeline and circumstances — never a template.',
+  },
+  {
+    icon: 'shield',
+    title: 'Ethical, transparent care',
+    text: 'Clear cost communication, informed consent and honest expectations at every stage.',
+  },
+  {
+    icon: 'lab',
+    title: 'International-standard infrastructure',
+    text: 'Continuous laboratory surveillance, secure witnessing protocols and controlled embryo environments.',
+  },
+  {
+    icon: 'heart',
+    title: 'Emotional support throughout',
+    text: 'Fertility treatment is emotional. Our team stays reachable, responsive and genuinely present.',
+  },
+];
+
+const carePrinciples = [
+  {
+    title: 'Clear cost communication',
+    text: 'Every treatment plan comes with a clear cost breakdown, so you always know what to expect before you begin.',
+    image: '/images/treatments/personalized-fertility-treatment-plan-mumbai.webp',
+    alt: 'Personalised fertility treatment plan prepared at Wonder IVF',
+  },
+  {
+    title: 'Ethical & thoughtful care',
+    text: 'Each stage is explained in plain language and proceeds only with your full understanding, consent and comfort.',
+    image: '/images/treatments/fertility-specialist-consultion-in-mumbai-1.webp',
+    alt: 'Fertility specialist in consultation with a patient at Wonder IVF',
+  },
+  {
+    title: 'Easy access to your information',
+    text: 'Reports, progress and updates are shared in a simple, accessible way — so you are never left guessing.',
+    image: '/images/treatments/fertility-consultation-india.webp',
+    alt: 'Patient reviewing fertility reports and treatment updates',
+  },
+  {
+    title: 'Always within reach',
+    text: 'Whether it is a quick query or you need guidance, our team stays connected and responsive through your journey.',
+    image: '/images/treatments/couple-fertility-consultation-india.webp',
+    alt: 'Couple supported by the Wonder IVF care team',
+  },
+];
+---
+
+<BaseLayout
+  title="Wonder IVF — Advanced Fertility & IVF Care in Mumbai and Kolhapur"
+  description="Wonder IVF offers advanced, personalised fertility care — IVF, IUI, ICSI, diagnostics and fertility preservation with an experienced team across Andheri West, Mumbai and Kolhapur."
+  canonical="/"
+  image="/images/hero/best-ivf-centre-in-mumbai.webp"
+  imageAlt="Wonder IVF advanced fertility and IVF centre in India"
+  jsonLd={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'MedicalClinic',
+      name: 'Wonder IVF',
+      url: 'https://wonderivf.com/',
+      email: site.email,
+      telephone: site.phone,
+      medicalSpecialty: 'ReproductiveHealth',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Unit 203-205, 2nd Floor, Lotus Link Square, DN Nagar Link Road, Andheri West',
+        addressLocality: 'Mumbai',
+        addressRegion: 'Maharashtra',
+        postalCode: '400053',
+        addressCountry: 'IN',
+      },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Wonder IVF',
+      url: 'https://wonderivf.com/',
+      logo: 'https://wonderivf.com/brand/wonder-ivf-mumbai-india.png',
+      sameAs: site.socials.map((s) => s.href),
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: site.phone,
+        contactType: 'customer service',
+        email: site.email,
+      },
+    },
+  ]}
+>
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="blob blob-rose" style="width:560px;height:560px;top:-180px;right:-120px;"></div>
+      <div class="blob blob-lav" style="width:480px;height:480px;bottom:-200px;left:-140px;"></div>
+      <div class="organic-lines" style="opacity:.55;"></div>
+    </div>
+
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow eyebrow-pill" data-reveal="in">Wonder IVF · Fertility & IVF Care</span>
+
+        <h1 class="h-display" style="margin-top:1.4rem;">
+          <span class="line" data-reveal="in" style="--reveal-delay:80ms">A gentle beginning</span>
+          <span class="line" data-reveal="in" style="--reveal-delay:200ms">to the family you have</span>
+          <span class="line" data-reveal="in" style="--reveal-delay:320ms"
+            >always <em class="italic-accent">dreamed of.</em></span
+          >
+        </h1>
+
+        <p class="lead" data-reveal="in" style="--reveal-delay:440ms;max-width:54ch;margin-top:1.5rem;">
+          Advanced fertility care with a human touch — thoughtful diagnosis, personalised
+          treatment and honest guidance from a team that has walked this path with families
+          for over 15 years.
+        </p>
+
+        <div class="btn-row" data-reveal="in" style="--reveal-delay:560ms;margin-top:2.2rem;">
+          <a class="btn btn-lg" href="/contact-us/" data-magnetic>
+            Book a Consultation
+            <Icon name="arrow" class="arrow" />
+          </a>
+          <a class="btn btn-ghost btn-lg" href="/treatments/">
+            Explore Treatments
+          </a>
+        </div>
+
+        <div class="hero-trust" data-reveal="in" style="--reveal-delay:680ms">
+          <div class="hero-avatars">
+            {
+              doctors.map((d) => (
+                <a href={d.path} class="hero-avatar" aria-label={d.name}>
+                  <Img src={d.image} alt="" sizes="56px" />
+                </a>
+              ))
+            }
+          </div>
+          <p>
+            Led by <strong>Dr. Kanika Kalyani</strong>, Dr. Rinoy Sreedharan and Dr. Shilpa S.
+            <br />
+            <span class="muted">MBBS, MD · MS · advanced training in reproductive medicine</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="hero-visual" data-reveal="right">
+        <div class="hero-frame media media-zoom">
+          <Img
+            src="/images/hero/best-ivf-centre-in-mumbai.webp"
+            alt="Wonder IVF fertility team supporting hopeful parents in Mumbai, India"
+            sizes="(max-width: 900px) 100vw, 46vw"
+            priority
+            position="center"
+          />
+        </div>
+
+        <div class="hero-float hero-float-1" data-float="1">
+          <span class="tile-icon"><Icon name="flask" /></span>
+          <div>
+            <strong>Embryology lab</strong>
+            <span>Continuous surveillance &amp; secure witnessing</span>
+          </div>
+        </div>
+
+        <div class="hero-float hero-float-2" data-float="2">
+          <Img
+            src="/images/hero/happy-family-after-ivf-treatment.webp"
+            alt="Family celebrating after successful fertility treatment"
+            sizes="120px"
+          />
+          <div>
+            <strong>15+ years</strong>
+            <span>of fertility &amp; IVF experience</span>
+          </div>
+        </div>
+
+        <div class="hero-ring" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STATS ================= -->
+  <section class="section-tight stats-band">
+    <div class="container">
+      <AnimatedStats stats={heroStats} client:visible />
+    </div>
+  </section>
+
+  <!-- ================= WHY ================= -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Why Wonder IVF</span>
+        <h2 class="h2">
+          Care that is <em class="italic-accent">advanced</em>, personal and honest
+        </h2>
+        <p class="lead">
+          We combine cutting-edge reproductive science with genuine human connection —
+          because fertility treatment is never only a medical process.
+        </p>
+      </div>
+
+      <div class="grid grid-3">
+        {
+          why.map((f, i) => (
+            <div class="card card-hover tile" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+              <span class="tile-icon">
+                <Icon name={f.icon as any} />
+              </span>
+              <h3 class="h5">{f.title}</h3>
+              <p style="font-size:.95rem;">{f.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PHILOSOPHY ================= -->
+  <section class="section section-cream philosophy">
+    <div class="container">
+      <div class="split">
+        <div class="philosophy-media" data-reveal="left">
+          <div class="media media-tall media-zoom">
+            <Img
+              src="/images/hero/fertility-parenthood-journey-india.webp"
+              alt="Couple supported on their parenthood journey at Wonder IVF"
+              sizes="(max-width: 900px) 100vw, 46vw"
+            />
+          </div>
+          <div class="philosophy-note">
+            <span class="num">Our promise</span>
+            <p>Every miracle begins with hope.</p>
+          </div>
+        </div>
+
+        <div data-reveal="right">
+          <span class="eyebrow">More than treatment</span>
+          <h2 class="h2" style="margin-top:1rem;">
+            A journey of hope, met with <em class="italic-accent">expertise</em>
+          </h2>
+          <div class="prose" style="margin-top:1.4rem;">
+            <p>
+              At Wonder IVF, every dream of parenthood deserves compassion and the right
+              guidance. We understand the emotional journey couples go through when
+              conception does not happen naturally — and we walk beside you with empathy,
+              expertise and trust.
+            </p>
+            <p>
+              Backed by a team with over 15 years of experience in fertility and IVF care,
+              we bring together experienced, compassionate minds in reproductive medicine —
+              offering advanced fertility solutions, ethical care and highly personalised
+              treatment plans designed around your unique journey.
+            </p>
+          </div>
+
+          <ul class="check-list cols-2" style="margin-top:1.8rem;">
+            <li>Patient-first approach</li>
+            <li>Modern labs and advanced technology</li>
+            <li>Experienced fertility specialists</li>
+            <li>Transparent, ethical care</li>
+            <li>Personalised treatment strategies</li>
+            <li>Emotional support at every step</li>
+          </ul>
+
+          <div class="btn-row" style="margin-top:2.2rem;">
+            <a class="btn" href="/about-us/">Explore more about us <Icon name="arrow" class="arrow" /></a>
+            <a class="link-arrow" href="/our-doctors/">Meet our specialists <Icon name="arrow" class="arrow" /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TREATMENTS ================= -->
+  <section class="section" id="treatments">
+    <div class="container">
+      <div class="split-head">
+        <div class="section-head" style="margin-bottom:0;" data-reveal>
+          <span class="eyebrow">Our treatments</span>
+          <h2 class="h2">
+            Every path to parenthood, <em class="italic-accent">clearly explained</em>
+          </h2>
+        </div>
+        <a class="btn btn-ghost" href="/treatments/" data-reveal>
+          View all treatments <Icon name="arrow" class="arrow" />
+        </a>
+      </div>
+
+      <TreatmentExplorer client:visible />
+    </div>
+  </section>
+
+  <!-- ================= JOURNEY ================= -->
+  <section class="section section-blush journey">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Your fertility journey</span>
+        <h2 class="h2">Clarity and support at <em class="italic-accent">every stage</em></h2>
+        <p class="lead">
+          Your journey is designed with precision and continuous support — so you always
+          know what to expect and feel confident at each step.
+        </p>
+      </div>
+
+      <JourneyTimeline client:visible />
+    </div>
+  </section>
+
+  <!-- ================= DOCTORS ================= -->
+  <section class="section">
+    <div class="container">
+      <div class="split-head">
+        <div class="section-head" style="margin-bottom:0;" data-reveal>
+          <span class="eyebrow">Our doctors</span>
+          <h2 class="h2">Specialists who treat the <em class="italic-accent">person</em>, not just the report</h2>
+        </div>
+        <a class="btn btn-ghost" href="/our-doctors/" data-reveal>
+          Meet the team <Icon name="arrow" class="arrow" />
+        </a>
+      </div>
+
+      <div class="grid grid-3">
+        {doctors.map((d) => <DoctorCard doctor={d} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TECHNOLOGY ================= -->
+  <section class="section section-plum tech">
+    <div class="organic-lines" aria-hidden="true" style="opacity:.3;"></div>
+    <div class="container" style="position:relative;z-index:2;">
+      <div class="split split-wide">
+        <div data-reveal="left">
+          <span class="eyebrow">Technology &amp; infrastructure</span>
+          <h2 class="h2" style="margin-top:1rem;">
+            A laboratory built for <em class="italic-accent">precision and safety</em>
+          </h2>
+          <p class="lead" style="margin-top:1.2rem;">
+            Our facility is designed for accuracy and better outcomes — a state-of-the-art
+            embryology lab, continuous surveillance and a full-time clinical and embryology
+            team working in controlled environments.
+          </p>
+
+          <div class="pill-list" style="margin-top:1.8rem;">
+            {
+              [
+                'State-of-the-art embryology lab',
+                'Continuous lab surveillance',
+                'Secure witnessing protocols',
+                'Closed working chamber',
+                'Blastocyst culture',
+                'Laser assisted hatching',
+                'Advanced endoscopy',
+                'Gynaecology & obstetric ultrasound',
+              ].map((t) => <span class="badge-soft">{t}</span>)
+            }
+          </div>
+
+          <div class="btn-row" style="margin-top:2.2rem;">
+            <a class="btn btn-light" href="/technology-and-infrastructure/">
+              Explore our infrastructure <Icon name="arrow" class="arrow" />
+            </a>
+          </div>
+        </div>
+
+        <div class="tech-grid" data-reveal="right">
+          <div class="tech-main media">
+            <Img
+              src="/images/facility/advanced-ivf-laboratory-facility-mumbai.webp"
+              alt="Advanced IVF laboratory facility at Wonder IVF"
+              sizes="(max-width: 900px) 100vw, 44vw"
+            />
+          </div>
+          <div class="tech-cards">
+            {
+              [
+                { icon: 'scan', k: 'Monitoring', v: 'Advanced monitoring systems across the lab' },
+                { icon: 'shield', k: 'Safety', v: 'Controlled environments for embryo development' },
+                { icon: 'users', k: 'Team', v: 'Full-time clinical & embryology specialists' },
+                { icon: 'micro', k: 'Techniques', v: 'IVF · ICSI · PGT · cryopreservation' },
+              ].map((c) => (
+                <div class="card card-glass">
+                  <span class="tile-icon" style="background:rgba(255,255,255,.16);color:#fff;">
+                    <Icon name={c.icon as any} />
+                  </span>
+                  <strong>{c.k}</strong>
+                  <span>{c.v}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LEADERSHIP ================= -->
+  <section class="section leadership">
+    <div class="container">
+      <div class="split">
+        <div data-reveal="left">
+          <span class="eyebrow">Leadership</span>
+          <h2 class="h2" style="margin-top:1rem;">
+            Founded on <em class="italic-accent">hope, honesty</em> and compassion
+          </h2>
+          <div class="prose" style="margin-top:1.3rem;">
+            <p>
+              Wonder IVF was built by people who believe that world-class fertility care
+              should also feel human. That belief shapes how we treat every patient, explain
+              every option and stand beside every family.
+            </p>
+          </div>
+
+          <div class="leader-list">
+            {
+              leaders.map((l) => (
+                <div class="leader-row">
+                  <div class="leader-thumb media">
+                    <Img src={l.image} alt={l.imageAlt} sizes="96px" />
+                  </div>
+                  <div>
+                    <h3 class="h5">{l.name}</h3>
+                    <span class="num">{l.role}</span>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+
+          <div class="btn-row" style="margin-top:2rem;">
+            <a class="btn" href="/leadership/">Meet our leadership <Icon name="arrow" class="arrow" /></a>
+          </div>
+        </div>
+
+        <div class="leadership-visual" data-reveal="right">
+          <div class="media media-tall media-zoom">
+            <Img
+              src="/images/leadership/mr-manish-khatri-ivf-specialist-india.webp"
+              alt="Mr. Manish Khatri, Director at Wonder IVF"
+              sizes="(max-width: 900px) 100vw, 46vw"
+              position="top center"
+            />
+          </div>
+          <blockquote class="leadership-quote">
+            <p>“Every family that walks through our doors deserves honesty, compassion and the very best of modern fertility care.”</p>
+            <footer>— Wonder IVF Leadership</footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LOCATIONS ================= -->
+  <section class="section section-cream">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Our locations</span>
+        <h2 class="h2">Expert fertility care, <em class="italic-accent">close to home</em></h2>
+        <p class="lead">Two centres and a corporate office — with care that stays within reach.</p>
+      </div>
+
+      <div class="grid grid-3">
+        {
+          locations.map((loc, i) => (
+            <article class="card card-hover location-card" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+              <span class="tile-icon"><Icon name="pin" /></span>
+              <h3 class="h5">{loc.name}</h3>
+              <p style="font-size:.93rem;">{loc.address.join(', ')}</p>
+              <div class="location-actions">
+                <a class="link-arrow" href={`tel:${loc.phoneHref}`}>
+                  <Icon name="phone" /> {loc.phone}
+                </a>
+                {'mapUrl' in loc && loc.mapUrl && (
+                  <a class="link-arrow" href={loc.mapUrl} target="_blank" rel="noopener noreferrer">
+                    <Icon name="arrow" class="arrow" /> Directions
+                  </a>
+                )}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div style="text-align:center;margin-top:2.5rem;" data-reveal>
+        <a class="btn btn-ghost" href="/locations/">View all locations <Icon name="arrow" class="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CARE PRINCIPLES ================= -->
+  <section class="section">
+    <div class="container">
+      <div class="split-head">
+        <div class="section-head" style="margin-bottom:0;" data-reveal>
+          <span class="eyebrow">Supporting your journey</span>
+          <h2 class="h2">Trust, built through <em class="italic-accent">clarity</em></h2>
+        </div>
+        <a class="btn btn-ghost" href="/patient-support-services/" data-reveal>
+          Patient support <Icon name="arrow" class="arrow" />
+        </a>
+      </div>
+
+      <div class="grid grid-4">
+        {
+          carePrinciples.map((p, i) => (
+            <article class="care-card" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+              <div class="media media-square media-zoom" style="border-radius:var(--r-md);">
+                <Img src={p.image} alt={p.alt} sizes="(max-width: 700px) 50vw, 24vw" />
+              </div>
+              <h3 class="h5" style="margin-top:1.1rem;">{p.title}</h3>
+              <p style="font-size:.92rem;margin-top:.4rem;">{p.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <FAQSection items={generalFaqs.slice(0, 6)} schema={false} />
+
+  <!-- ================= BLOG ================= -->
+  <section class="section section-cream">
+    <div class="container">
+      <div class="split-head">
+        <div class="section-head" style="margin-bottom:0;" data-reveal>
+          <span class="eyebrow">From our journal</span>
+          <h2 class="h2">Expert guidance on the <em class="italic-accent">IVF journey</em></h2>
+        </div>
+        <a class="btn btn-ghost" href="/blog/" data-reveal>View all articles <Icon name="arrow" class="arrow" /></a>
+      </div>
+
+      <div class="grid grid-3">
+        {
+          posts.map((p, i) => (
+            <article class="blog-card" data-reveal style={`--reveal-delay:${i * 70}ms`}>
+              <a class="media media-wide media-zoom" href={p.path} style="border-radius:var(--r-md);">
+                <Img src={p.image} alt={p.imageAlt} sizes="(max-width: 700px) 100vw, 33vw" />
+              </a>
+              <div class="blog-meta">
+                <span>{p.category}</span>
+                <span aria-hidden="true">•</span>
+                <time datetime={p.dateISO}>{p.date}</time>
+                <span aria-hidden="true">•</span>
+                <span>{p.readingTime}</span>
+              </div>
+              <h3 class="h5"><a href={p.path}>{p.title}</a></h3>
+              <p style="font-size:.93rem;">{p.excerpt}</p>
+              <a class="link-arrow" href={p.path}>Read article <Icon name="arrow" class="arrow" /></a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTABand />
+</BaseLayout>
+
+<style>
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    padding-top: clamp(3.5rem, 7vw, 6rem);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--ivory) 0%, #fff7f9 55%, var(--ivory) 100%);
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .hero-copy {
+    display: grid;
+    justify-items: start;
+  }
+  .hero h1 .line {
+    display: block;
+  }
+  .hero-trust {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2.6rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--line);
+    width: 100%;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .hero-avatars {
+    display: flex;
+    flex: none;
+  }
+  .hero-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2.5px solid var(--ivory);
+    background: var(--blush);
+    transition: transform 0.45s var(--ease);
+  }
+  .hero-avatar + .hero-avatar {
+    margin-left: -14px;
+  }
+  .hero-avatar:hover {
+    transform: translateY(-5px);
+    z-index: 2;
+  }
+  .hero-avatar :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .hero-visual {
+    position: relative;
+  }
+  .hero-frame {
+    border-radius: 240px 240px var(--r-lg) var(--r-lg);
+    box-shadow: var(--shadow-lg);
+    aspect-ratio: 4 / 4.6;
+    background: var(--blush);
+  }
+  .hero-frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-float {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: var(--r-md);
+    padding: 0.85rem 1.1rem;
+    box-shadow: var(--shadow-float);
+    z-index: 4;
+    animation: floaty 6.5s ease-in-out infinite;
+  }
+  .hero-float strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .hero-float span:not(.tile-icon) {
+    font-size: 0.76rem;
+    color: var(--body-soft);
+    line-height: 1.35;
+    display: block;
+    max-width: 20ch;
+  }
+  .hero-float-1 {
+    left: -8%;
+    top: 14%;
+    animation-delay: 0.6s;
+  }
+  .hero-float-2 {
+    right: -4%;
+    bottom: 8%;
+    animation-delay: 1.8s;
+  }
+  .hero-float-2 :global(img) {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex: none;
+  }
+  .hero-ring {
+    position: absolute;
+    inset: -7% -6%;
+    border: 1px dashed rgba(209, 127, 156, 0.4);
+    border-radius: 50%;
+    z-index: -1;
+    animation: spin 60s linear infinite;
+  }
+  @keyframes floaty {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-13px);
+    }
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ---------- STATS ---------- */
+  .stats-band {
+    background: var(--white);
+    border-block: 1px solid var(--line-soft);
+    position: relative;
+    z-index: 3;
+  }
+
+  /* ---------- PHILOSOPHY ---------- */
+  .philosophy-media {
+    position: relative;
+  }
+  .philosophy-note {
+    position: absolute;
+    right: -4%;
+    bottom: 8%;
+    background: var(--plum);
+    color: #fff;
+    border-radius: var(--r-md);
+    padding: 1.4rem 1.6rem;
+    max-width: 240px;
+    box-shadow: var(--shadow-float);
+  }
+  .philosophy-note .num {
+    color: var(--rose);
+  }
+  .philosophy-note p {
+    margin-top: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-style: italic;
+    line-height: 1.35;
+    color: #fff;
+  }
+
+  /* ---------- TECH ---------- */
+  .tech-grid {
+    display: grid;
+    gap: 1rem;
+  }
+  .tech-main {
+    aspect-ratio: 16 / 10;
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-lg);
+  }
+  .tech-main :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .tech-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .tech-cards .card {
+    display: grid;
+    gap: 0.4rem;
+    justify-items: start;
+    padding: 1.25rem;
+  }
+  .tech-cards strong {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+  .tech-cards span:not(.tile-icon) {
+    font-size: 0.84rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.45;
+  }
+
+  /* ---------- LEADERSHIP ---------- */
+  .leader-list {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .leader-row {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 0.9rem;
+    background: var(--white);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-md);
+    transition:
+      transform 0.5s var(--ease),
+      box-shadow 0.5s var(--ease);
+  }
+  .leader-row:hover {
+    transform: translateX(6px);
+    box-shadow: var(--shadow-sm);
+  }
+  .leader-thumb {
+    width: 76px;
+    height: 76px;
+    border-radius: 18px;
+    flex: none;
+    overflow: hidden;
+  }
+  .leader-thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+  .leadership-visual {
+    position: relative;
+  }
+  .leadership-quote {
+    position: absolute;
+    left: -6%;
+    bottom: -6%;
+    background: var(--white);
+    border-radius: var(--r-md);
+    padding: 1.4rem 1.6rem;
+    max-width: 330px;
+    box-shadow: var(--shadow-float);
+    border: 1px solid var(--line-soft);
+  }
+  .leadership-quote p {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .leadership-quote footer {
+    margin-top: 0.6rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rose-deep);
+    font-weight: 700;
+  }
+
+  /* ---------- LOCATION ---------- */
+  .location-card {
+    display: grid;
+    gap: 0.7rem;
+    justify-items: start;
+  }
+  .location-actions {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+  .location-actions .link-arrow {
+    font-size: 0.9rem;
+  }
+
+  /* ---------- BLOG ---------- */
+  .blog-card {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+  }
+  .blog-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rose-deep);
+    font-family: var(--font-display);
+    margin-top: 0.4rem;
+  }
+  .blog-card h3 a {
+    transition: color 0.3s var(--ease);
+  }
+  .blog-card:hover h3 a {
+    color: var(--plum-soft);
+  }
+  .blog-card .link-arrow {
+    font-size: 0.88rem;
+    justify-self: start;
+  }
+
+  @media (max-width: 1024px) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hero-visual {
+      max-width: 520px;
+      margin-inline: auto;
+      width: 100%;
+    }
+    .hero-float-1 {
+      left: -4%;
+    }
+    .hero-float-2 {
+      right: -2%;
+    }
+  }
+  @media (max-width: 700px) {
+    .hero-frame {
+      border-radius: 180px 180px var(--r-md) var(--r-md);
+    }
+    .hero-float {
+      padding: 0.7rem 0.85rem;
+      animation: none;
+    }
+    .hero-float span:not(.tile-icon) {
+      display: none;
+    }
+    .philosophy-note,
+    .leadership-quote {
+      position: static;
+      max-width: none;
+      margin-top: 1rem;
+    }
+    .tech-cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-float,
+    .hero-ring {
+      animation: none !important;
+    }
+  }
+</style>
