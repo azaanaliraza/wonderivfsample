@@ -1,4 +1,6 @@
 ---
+import { abs, siteUrl, stripBase, toAbsolute } from '../lib/urls';
+
 interface Props {
   title: string;
   description: string;
@@ -20,9 +22,8 @@ const {
   jsonLd,
 } = Astro.props;
 
-const siteUrl = 'https://wonderivf.com';
-const fullUrl = canonical ? new URL(canonical, siteUrl).href : Astro.url.href;
-const fullImage = new URL(image, siteUrl).href;
+const fullUrl = canonical ? toAbsolute(canonical) : abs(stripBase(Astro.url.pathname));
+const fullImage = abs(image);
 const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 
 const cutAtWord = (value: string, max: number): string => {

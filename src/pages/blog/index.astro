@@ -5,6 +5,7 @@ import ServiceCard from '../../components/ServiceCard.astro';
 import CTABand from '../../components/CTABand.astro';
 import Icon from '../../components/Icon.astro';
 import { posts } from '../../content/blog';
+import { abs } from '../../lib/urls';
 
 const metaDescription =
   'Fertility education from Wonder IVF — plain-language guides on IVF, nutrition, embryo transfer and treatment decisions.';
@@ -25,8 +26,8 @@ const metaDescription =
       '@type': 'BlogPosting',
       headline: p.title,
       datePublished: p.dateISO,
-      url: `https://wonderivf.com${p.path}`,
-      image: `https://wonderivf.com${p.image}`,
+      url: abs(p.path),
+      image: abs(p.image),
       author: { '@type': 'Organization', name: 'Wonder IVF' },
     })),
   }}

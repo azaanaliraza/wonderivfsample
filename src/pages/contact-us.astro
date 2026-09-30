@@ -8,6 +8,7 @@ import FAQSection from '../components/FAQSection.astro';
 import { contactPage, contactFormSubjects } from '../content/pages';
 import { generalFaqs } from '../content/faqs';
 import { site } from '../lib/site';
+import { siteUrl } from '../lib/urls';
 ---
 
 <BaseLayout
@@ -20,7 +21,7 @@ import { site } from '../lib/site';
     '@context': 'https://schema.org',
     '@type': 'MedicalClinic',
     name: 'Wonder IVF',
-    url: 'https://wonderivf.com/',
+    url: siteUrl,
     telephone: '+91-70734-31122',
     email: site.email,
     medicalSpecialty: 'ReproductiveHealth',

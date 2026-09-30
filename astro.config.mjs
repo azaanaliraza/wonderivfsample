@@ -4,10 +4,12 @@ import sitemap from '@astrojs/sitemap';
 
 // SITE_BASE lets CI serve the build from a sub-path (e.g. GitHub Pages).
 // Production builds leave it unset so the site deploys at the domain root.
+// SITE_URL sets the origin used for canonical/OG/JSON-LD/robots/sitemap URLs.
 const base = process.env.SITE_BASE || undefined;
+const site = process.env.SITE_URL || 'https://wonderivf.com';
 
 export default defineConfig({
-  site: 'https://wonderivf.com',
+  site,
   ...(base ? { base } : {}),
   integrations: [react(), sitemap()],
   image: {

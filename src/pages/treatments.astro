@@ -8,6 +8,7 @@ import Icon from '../components/Icon.astro';
 import { treatments } from '../content/treatments';
 import { conditions } from '../content/conditions';
 import { diagnostics } from '../content/diagnostics';
+import { abs } from '../lib/urls';
 ---
 
 <BaseLayout
@@ -26,7 +27,7 @@ import { diagnostics } from '../content/diagnostics';
       item: {
         '@type': 'MedicalProcedure',
         name: t.title,
-        url: `https://wonderivf.com${t.path}`,
+        url: abs(t.path),
       },
     })),
   }}

@@ -33,6 +33,7 @@ jobs:
         run: bun run build
         env:
           SITE_BASE: /wonderivfsample
+          SITE_URL: https://${{ github.repository_owner }}.github.io
 
       - name: Rebase URLs for the Pages sub-path
         run: node scripts/apply-base.mjs

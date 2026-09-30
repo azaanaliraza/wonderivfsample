@@ -6,6 +6,7 @@ import CTABand from '../components/CTABand.astro';
 import AnimatedStats from '../components/react/AnimatedStats';
 import Icon from '../components/Icon.astro';
 import { doctors } from '../content/doctors';
+import { abs } from '../lib/urls';
 
 const stats = [
   { value: 15, suffix: '+', label: 'Years of team experience in fertility and IVF care' },
@@ -31,8 +32,8 @@ const stats = [
         '@type': 'Physician',
         name: d.name,
         jobTitle: d.title,
-        url: `https://wonderivf.com${d.path}`,
-        image: `https://wonderivf.com${d.image}`,
+        url: abs(d.path),
+        image: abs(d.image),
         worksFor: { '@type': 'MedicalClinic', name: 'Wonder IVF' },
       },
     })),

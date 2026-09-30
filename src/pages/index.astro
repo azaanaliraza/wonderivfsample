@@ -17,6 +17,7 @@ import { generalFaqs } from '../content/faqs';
 import { leaders } from '../content/leadership';
 import { locations } from '../lib/site';
 import { site } from '../lib/site';
+import { abs, siteUrl } from '../lib/urls';
 
 const heroStats = [
   { value: 15, suffix: '+', label: 'Years of team experience in fertility and IVF care' },
@@ -97,7 +98,7 @@ const carePrinciples = [
       '@context': 'https://schema.org',
       '@type': 'MedicalClinic',
       name: 'Wonder IVF',
-      url: 'https://wonderivf.com/',
+      url: siteUrl,
       email: site.email,
       telephone: site.phone,
       medicalSpecialty: 'ReproductiveHealth',
@@ -114,8 +115,8 @@ const carePrinciples = [
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'Wonder IVF',
-      url: 'https://wonderivf.com/',
-      logo: 'https://wonderivf.com/brand/wonder-ivf-mumbai-india.png',
+      url: siteUrl,
+      logo: abs('/brand/wonder-ivf-mumbai-india.png'),
       sameAs: site.socials.map((s) => s.href),
       contactPoint: {
         '@type': 'ContactPoint',

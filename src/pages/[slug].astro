@@ -10,6 +10,7 @@ import { diagnostics } from '../content/diagnostics';
 import { conditions } from '../content/conditions';
 import { doctors } from '../content/doctors';
 import { posts } from '../content/blog';
+import { abs, siteUrl } from '../lib/urls';
 
 export async function getStaticPaths() {
   const tSiblings = treatments.map((t) => ({ label: t.title, href: t.path }));
@@ -84,10 +85,10 @@ const jsonLd =
         headline: post.title,
         description: meta.description,
         datePublished: post.dateISO,
-        image: `https://wonderivf.com${post.image}`,
+        image: abs(post.image),
         author: { '@type': 'Organization', name: 'Wonder IVF' },
-        publisher: { '@type': 'MedicalClinic', name: 'Wonder IVF', url: 'https://wonderivf.com/' },
-        mainEntityOfPage: `https://wonderivf.com${post.path}`,
+        publisher: { '@type': 'MedicalClinic', name: 'Wonder IVF', url: siteUrl },
+        mainEntityOfPage: abs(post.path),
       }
     : kind === 'doctor'
     ? {
@@ -96,8 +97,8 @@ const jsonLd =
         name: doctor.name,
         jobTitle: doctor.title,
         description: meta.description,
-        image: `https://wonderivf.com${doctor.image}`,
-        worksFor: { '@type': 'MedicalClinic', name: 'Wonder IVF', url: 'https://wonderivf.com/' },
+        image: abs(doctor.image),
+        worksFor: { '@type': 'MedicalClinic', name: 'Wonder IVF', url: siteUrl },
         medicalSpecialty: 'ReproductiveHealth',
       }
     : kind === 'service'

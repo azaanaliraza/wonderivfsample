@@ -1,8 +1,10 @@
+import { siteUrl } from './urls';
+
 export const site = {
   name: 'Wonder IVF',
   legalName: 'Wonder IVF and Childcare Private Limited',
   tagline: 'Advanced Fertility Care with a Human Touch',
-  url: 'https://wonderivf.com',
+  url: siteUrl,
   description:
     'Wonder IVF is an advanced fertility and IVF care provider in India, offering personalised fertility treatment, diagnostics, assisted reproduction and fertility preservation across Mumbai and Kolhapur.',
   phone: '+91-70734-31122',
